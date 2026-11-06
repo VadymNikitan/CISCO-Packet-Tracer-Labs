@@ -159,6 +159,8 @@ Both router interfaces are operational (`up/up`).
 
 ### Routing Table
 
+![Routing Table](screenshots/03-routing-table-verification.png)
+
 Command:
 
 ```text
@@ -189,6 +191,8 @@ The static route to `192.168.2.0/24` points to the next-hop address `10.0.0.2` (
 
 ### ARP Table
 
+![ARP Table](screenshots/05-show-ip-arp.png)
+
 Command:
 
 ```text
@@ -202,6 +206,12 @@ Router>show ip arp
 Protocol  Address          Age (min)  Hardware Addr   Type   Interface
 Internet  10.0.0.1                -   0060.7036.8B02  ARPA   GigabitEthernet0/1
 Internet  192.168.1.1             -   0060.7036.8B01  ARPA   GigabitEthernet0/0
+Router>show ip arp
+Protocol  Address          Age (min)  Hardware Addr   Type   Interface
+Internet  10.0.0.1                -   0060.7036.8B02  ARPA   GigabitEthernet0/1
+Internet  10.0.0.2                17  0090.0C7E.2202  ARPA   GigabitEthernet0/1
+Internet  192.168.1.1             -   0060.7036.8B01  ARPA   GigabitEthernet0/0
+Internet  192.168.1.10            17  000A.4190.6C7E  ARPA   GigabitEthernet0/0
 ```
 
 
@@ -209,6 +219,8 @@ Internet  192.168.1.1             -   0060.7036.8B01  ARPA   GigabitEthernet0/0
 ### Connectivity Test
 
 Connectivity was tested between devices located in different LANs.
+
+![Ping Test](screenshots/04-end-to-end-ping.png)
 
 A ping test was performed from PC0 (LAN 1) to PC2 (LAN 2):
 
