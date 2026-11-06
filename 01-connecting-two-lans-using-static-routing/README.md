@@ -199,7 +199,7 @@ Command:
 show ip arp
 ```
 
-Output from R1:
+Output from R0:
 
 ```text
 Router>show ip arp
