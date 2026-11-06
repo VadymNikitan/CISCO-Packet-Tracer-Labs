@@ -130,6 +130,8 @@ Configure the following IPv4 settings on the PCs:
 | PC2 | FastEthernet0 | 192.168.2.10 | 255.255.255.0 | 192.168.2.1 |
 | PC3 | FastEthernet0 | 192.168.2.11 | 255.255.255.0 | 192.168.2.1 |
 
+![Host Configuration](screenshots/02-host-ip-configuration.png)
+
 ## 6. Verification and Testing
 
 The following Cisco IOS commands were used to verify the network configuration.
