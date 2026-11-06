@@ -22,7 +22,7 @@ The lab was built and tested using Cisco Packet Tracer.
 
 ## 3. Network Topology
 
-*Topology diagram will be added here.*
+![Network Topology](screenshots/![Network Topology](screenshots/topology.png))
 
 The network consists of:
 
