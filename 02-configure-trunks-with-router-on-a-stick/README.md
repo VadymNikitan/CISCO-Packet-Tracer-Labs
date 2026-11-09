@@ -87,7 +87,7 @@ Switch(config-vlan)# exit
 ### Verification
 
 ```text
-Switch(config)# do show vlan brief
+Switch(config)# show vlan brief
 ```
 
 ![VLAN configuration](screenshots/02-show-vlan-brief.png)
@@ -139,7 +139,7 @@ Switch(config-if)# exit
 ### Verification
 
 ```text
-Switch(config)# do show vlan brief
+Switch(config)# show vlan brief
 ```
 
 ![Access port configuration](screenshots/03-access-mode.png)
@@ -305,7 +305,7 @@ Ping statistics for 192.168.30.1:
     Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
 ```
 
-![Server to gateway ping](screenshots/05-server-gateway.png)
+![Server to gateway ping](screenshots/05-ping-server-gateway.png)
 
 The successful replies confirm connectivity between the server and its default gateway.
 
@@ -327,7 +327,7 @@ Ping statistics for 192.168.30.4:
     Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
 ```
 
-![PC0 to Server ping](screenshots/06-pc0-server.png)
+![PC0 to Server ping](screenshots/06-ping-pc0-vlan10-server.png)
 
 The source and destination are in different IP networks:
 
@@ -356,7 +356,7 @@ Ping statistics for 192.168.30.4:
     Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
 ```
 
-![PC2 to Server ping](screenshots/07-pc2-server.png)
+![PC2 to Server ping](screenshots/07-ping-pc2-vlan20server.png)
 
 This confirms that traffic can be routed from VLAN 20 to VLAN 30.
 
@@ -368,7 +368,21 @@ An additional test can be used to verify routing directly between VLAN 10 and VL
 
 ```text
 C:\>ping 192.168.20.2
+
+Pinging 192.168.20.2 with 32 bytes of data:
+
+Reply from 192.168.20.2: bytes=32 time<1ms TTL=127
+Reply from 192.168.20.2: bytes=32 time<1ms TTL=127
+Reply from 192.168.20.2: bytes=32 time<1ms TTL=127
+Reply from 192.168.20.2: bytes=32 time<1ms TTL=127
+
+Ping statistics for 192.168.20.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
 ```
+
+![PC0 to PC2 ping](screenshots/08-ping-pc0-vlan10-pc2-vlan20.png)
 
 The expected result is four successful replies.
 
