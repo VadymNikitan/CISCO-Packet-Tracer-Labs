@@ -15,7 +15,7 @@ The repository will be continuously updated as I learn new networking technologi
 | # | Lab | Topics | Status |
 |---|---|---|---|
 | 01 | Connecting Two LANs Using Static Routing | IPv4, Subnetting, Static Routing | Completed |
-| 02 | VLAN and Trunking | VLAN, Access Ports, Trunk Ports | Planned |
+| 02 | Configure Trunks with Router-on-a-Stick | VLAN, Access Ports, Trunk Ports | Completed |
 | 03 | Inter-VLAN Routing | Router-on-a-Stick | Planned |
 | 04 | DHCP Configuration | DHCP, IP Address Assignment | Planned |
 | 05 | NAT and PAT | Network Address Translation | Planned |
