@@ -2,24 +2,28 @@
 
 ## Project Overview
 
-This lab demonstrates DHCP configuration on a Cisco Router in a network with multiple VLANs using Cisco Packet Tracer.
+This lab demonstrates how to configure DHCP on a Cisco Router to automatically assign IP addresses to devices in multiple VLANs using Cisco Packet Tracer.
 
-The network uses Router-on-a-Stick for Inter-VLAN Routing and DHCP services for automatic IP address assignment.
+The existing network infrastructure uses Router-on-a-Stick for Inter-VLAN Routing, allowing DHCP services to operate across multiple subnets.
 
 ## Network Topology
 
 **Devices:**
-- 1 Cisco Router (2911)
-- 1 Cisco Switch (2960)
+- 1 Cisco Router
+- 1 Cisco Switch
 - 4 PCs
 - 1 Server
 
+![Network topology](screenshots/01-network-topology.png)
+
 **Technologies:**
-- VLAN Configuration
+- DHCP Configuration
+- DHCP Address Exclusion
+- Multiple DHCP Pools
+- VLANs
 - IEEE 802.1Q Trunking
 - Router-on-a-Stick
 - Inter-VLAN Routing
-- DHCP Configuration
 - Static IP Addressing
 - ARP
 - ICMP / Ping Testing
@@ -42,108 +46,19 @@ The network uses Router-on-a-Stick for Inter-VLAN Routing and DHCP services for 
 | PC3 | VLAN 20 | DHCP |
 | Server | VLAN 30 | Static: 192.168.30.4 |
 
-## Switch Configuration
-
-### 1. Create VLANs
-
-```cisco
-enable
-configure terminal
-
-vlan 10
- name HR
-
-vlan 20
- name IT-Department
-
-vlan 30
- name Servers
-
-exit
-```
-
-### 2. Assign Access Ports
-
-```cisco
-interface range fa0/1-2
- switchport mode access
- switchport access vlan 10
- exit
-
-interface range fa0/3-4
- switchport mode access
- switchport access vlan 20
- exit
-
-interface range fa0/5-7
- switchport mode access
- switchport access vlan 30
- exit
-```
-
-### 3. Configure Trunk Port
-
-Replace `<TRUNK_PORT>` with the actual switch interface connected to the router.
-
-```cisco
-interface <TRUNK_PORT>
- switchport mode trunk
- exit
-```
-
-## Router Configuration
-
-### 4. Configure Router-on-a-Stick
-
-Physical interface: GigabitEthernet0/0
-
-```cisco
-enable
-configure terminal
-
-interface g0/0
- no shutdown
- exit
-```
-
-VLAN 10:
-
-```cisco
-interface g0/0.10
- encapsulation dot1Q 10
- ip address 192.168.10.1 255.255.255.0
- exit
-```
-
-VLAN 20:
-
-```cisco
-interface g0/0.20
- encapsulation dot1Q 20
- ip address 192.168.20.1 255.255.255.0
- exit
-```
-
-VLAN 30:
-
-```cisco
-interface g0/0.30
- encapsulation dot1Q 30
- ip address 192.168.30.1 255.255.255.0
- exit
-```
-
 ## DHCP Configuration
 
 DHCP runs directly on the Cisco Router.
 
-VLAN 10 and VLAN 20 use dynamic IP addressing.
+- VLAN 10 and VLAN 20 use dynamic IP addressing.
+- The Server in VLAN 30 uses a manually configured static IP address.
+- No DHCP pool is configured for VLAN 30.
 
-The Server in VLAN 30 uses a manually configured static IP address, so no DHCP pool is required for VLAN 30.
+### 1. Configure Excluded Addresses
 
-### 5. Configure Excluded Addresses
+The first ten addresses in each DHCP subnet are excluded from dynamic allocation.
 
-Reserve the first ten addresses in each DHCP subnet.
+This reserves addresses for gateways and potential statically configured network devices.
 
 ```cisco
 ip dhcp excluded-address 192.168.10.1 192.168.10.10
@@ -151,7 +66,7 @@ ip dhcp excluded-address 192.168.10.1 192.168.10.10
 ip dhcp excluded-address 192.168.20.1 192.168.20.10
 ```
 
-### 6. Configure DHCP Pool – VLAN 10
+### 2. Configure DHCP Pool – VLAN 10
 
 ```cisco
 ip dhcp pool VLAN10
@@ -160,7 +75,7 @@ ip dhcp pool VLAN10
  exit
 ```
 
-### 7. Configure DHCP Pool – VLAN 20
+### 3. Configure DHCP Pool – VLAN 20
 
 ```cisco
 ip dhcp pool VLAN20
@@ -169,126 +84,76 @@ ip dhcp pool VLAN20
  exit
 ```
 
-## Server Configuration
-
-The Server uses static IP addressing.
-
-Configure under Desktop → IP Configuration:
-
-| Parameter | Value |
-|---|---|
-| IP Address | 192.168.30.4 |
-| Subnet Mask | 255.255.255.0 |
-| Default Gateway | 192.168.30.1 |
-| DNS Server | Not configured |
+![DHCP Pool](screenshots/03-dhcp-pool-vlan10-vlan20.png)
 
 ## PC Configuration
 
-On each PC:
+Each PC was configured to obtain its IP address automatically.
+
+Configuration steps:
 
 1. Open Desktop.
 2. Select IP Configuration.
 3. Select DHCP.
 
-Expected addressing:
+**Example IP addressing:**
 
-| PC | VLAN | Expected IP | Gateway |
+| PC | VLAN | Example IP Address | Default Gateway |
 |---|---|---|---|
 | PC0 | 10 | 192.168.10.11 | 192.168.10.1 |
-| PC1 | 10 | DHCP assigned | 192.168.10.1 |
+| PC1 | 10 | 192.168.10.12 | 192.168.10.1 |
 | PC2 | 20 | 192.168.20.11 | 192.168.20.1 |
-| PC3 | 20 | DHCP assigned | 192.168.20.1 |
+| PC3 | 20 | 192.168.20.12 | 192.168.20.1 |
 
-Note: Actual DHCP addresses depend on the order in which clients request leases.
+Actual DHCP addresses may vary depending on the order in which clients request leases.
 
-## Verification and Testing
+![DHCP Configuration on All PCs](screenshots/04-dhcp-check-all-pcs.png)
 
-### 8. Verify VLANs
+## Connectivity Testing
 
-On the Switch:
+Connectivity was tested from PC0 to devices in other VLANs.
 
-```cisco
-show vlan brief
-```
-
-### 9. Verify Trunk
-
-```cisco
-show interfaces trunk
-```
-
-### 10. Verify Router Interfaces
-
-```cisco
-show ip interface brief
-```
-
-Expected subinterfaces:
-
-| Interface | IP Address | Status |
-|---|---|---|
-| G0/0.10 | 192.168.10.1 | up/up |
-| G0/0.20 | 192.168.20.1 | up/up |
-| G0/0.30 | 192.168.30.1 | up/up |
-
-### 11. Verify DHCP Configuration
-
-```cisco
-show running-config | section dhcp
-```
-
-### 12. Verify DHCP Bindings
-
-```cisco
-show ip dhcp binding
-```
-
-This command displays dynamically assigned IP addresses and client MAC addresses.
-
-### 13. Test Connectivity
-
-From PC0:
+**Test commands:**
 
 ```text
-ping 192.168.10.1
 ping 192.168.20.11
 ping 192.168.30.4
 ```
 
-Expected results:
-- PC0 can reach its default gateway.
-- PC0 can communicate with PC2 in VLAN 20.
-- PC0 can communicate with the Server in VLAN 30.
+**PC0 → PC2 (VLAN 20)**
+
+![Ping PC0 to PC2](screenshots/06-ping-pc0-pc2.png)
+
+**PC0 → Server (VLAN 30)**
+
+![Ping PC0 to Server](screenshots/07-ping-pc0-server.png)
 
 ## Test Results
 
 | Test | Result |
 |---|---|
 | DHCP assignment in VLAN 10 | Successful |
-| DHCP binding on Router | Successful |
+| DHCP assignment in VLAN 20 | Successful |
+| DHCP binding verification on Router | Successful |
 | Inter-VLAN connectivity: VLAN 10 → VLAN 20 | Successful |
 | Inter-VLAN connectivity: VLAN 10 → VLAN 30 | Successful |
 | Server static IP connectivity | Successful |
 
-Note: The first ping to PC2 had one timeout (25% packet loss), followed by three successful replies. This can occur during initial ARP resolution. A repeated ping should be used to confirm stable connectivity.
-
 ## Key Concepts Learned
 
-- How DHCP dynamically assigns IP addresses.
-- How DHCP excluded addresses prevent address conflicts.
+- How DHCP dynamically assigns IP addresses to network clients.
+- How DHCP excluded addresses prevent allocation of reserved IP addresses.
 - How to configure multiple DHCP pools on a Cisco Router.
-- How VLANs separate broadcast domains.
-- How 802.1Q trunking transports multiple VLANs.
-- How Router-on-a-Stick enables Inter-VLAN Routing.
-- How ARP resolves IP addresses into MAC addresses.
-- How to troubleshoot network connectivity using Cisco IOS commands.
+- How DHCP works across multiple VLANs and subnets.
+- How to verify DHCP leases using `show ip dhcp binding`.
+- How to test network connectivity using ICMP ping.
 
 ## Conclusion
 
-Successfully configured DHCP services for two VLANs using a Cisco Router.
+Successfully configured DHCP services on a Cisco Router for two separate VLANs.
 
-Implemented three VLANs, configured 802.1Q trunking, enabled Inter-VLAN Routing, assigned a static IP address to the Server, and verified connectivity between network segments.
+Configured DHCP address exclusions, created multiple DHCP pools, assigned IP addresses automatically to client PCs, and verified connectivity between different VLANs and a statically configured server.
 
 **Platform:** Cisco Packet Tracer  
-**Focus:** Networking Fundamentals / CCNA Practice  
+**Focus:** DHCP / CCNA Practice  
 **Project Type:** Hands-on Networking Lab
