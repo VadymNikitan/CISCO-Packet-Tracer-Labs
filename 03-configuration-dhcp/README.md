@@ -107,7 +107,7 @@ Configuration steps:
 
 Actual DHCP addresses may vary depending on the order in which clients request leases.
 
-![DHCP Configuration on All PCs](screenshots/04-dhcp-check-all-pcs.png)
+![DHCP Configuration on All PCs](screenshots/04-dhcp-chek-all-pcs.png)
 
 ## Connectivity Testing
 
