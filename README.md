@@ -17,7 +17,7 @@ The repository will be continuously updated as I learn new networking technologi
 | 01 | [Connecting Two LANs Using Static Routing](./01-connecting-two-lans-using-static-routing) | IPv4, Subnetting, Static Routing | Completed |
 | 02 | [Configure Trunks with Router-on-a-Stick](./02-configure-trunks-with-router-on-a-stick/README.md) | Inter-VLAN Routing,Router-on-a-Stick  | Completed |
 | 03 | [DHCP Configuration with VLANs](./03-configuration-dhcp)   | Dynamic IP Assignment,DHCP Excluded-Address Configuration,Multi-Pool DHCP on Cisco IOS | Completed |
-| 04 | DHCP Configuration | DHCP, IP Address Assignment | Planned |
+| 04 |  |  |  |
 | 05 | NAT and PAT | Network Address Translation | Planned |
 | 06 | OSPF Routing | Dynamic Routing, OSPF | Planned |
 | 07 | Access Control Lists | ACL, Network Security | Planned |
